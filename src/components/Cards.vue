@@ -2,14 +2,20 @@
   <div class="container">
     <div class="flopp" v-if="getRound > 1">
       <div v-for="card in flopp" :key="card.value + card.suit">
-        <img :src="require(`@/assets/cards/${card.img}`)" alt="card" />
+        <div>
+          <img :src="require(`@/assets/cards/${card.img}`)" alt="card" />
+        </div>
       </div>
     </div>
     <div class="fourthCard" v-if="getRound > 2">
-      <img :src="require(`@/assets/cards/${fourthCard[0].img}`)" alt="card" />
+      <div>
+        <img :src="require(`@/assets/cards/${fourthCard[0].img}`)" />
+      </div>
     </div>
     <div class="fifthCard" v-if="getRound > 3">
-      <img :src="require(`@/assets/cards/${fifthCard[0].img}`)" alt="card" />
+      <div>
+        <img :src="require(`@/assets/cards/${fifthCard[0].img}`)" />
+      </div>
     </div>
   </div>
 </template>
@@ -18,21 +24,18 @@
 export default {
   computed: {
     flopp() {
-      return this.$store.getters.getFlopp;
+      return this.$store.state.cardDeck.flopp;
     },
     fourthCard() {
-      return this.$store.getters.getFourthCard;
+      return this.$store.state.cardDeck.fourthCard;
     },
     fifthCard() {
-      return this.$store.getters.getFifthCard;
+      return this.$store.state.cardDeck.fifthCard;
     },
     getRound() {
-      return this.$store.state.rounds.round
-    }
+      return this.$store.state.rounds.round;
+    },
   },
-  created() {
-    this.$store.dispatch("shuffleDeck")
-  }
 };
 </script>
 
@@ -48,7 +51,7 @@ export default {
   display: flex;
 }
 img {
-  width: 58px;
+  width: 70px;
   margin-left: 5px;
 }
 </style>

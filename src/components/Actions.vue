@@ -15,26 +15,94 @@
 </template>
 
 <script>
+import { solveHand } from "@/logic/solveHand.js";
+
 export default {
   data() {
     return {
       amount: "0",
       time: "30",
+      c: [],
     };
   },
   methods: {
     fold() {
-      if(this.$store.state.rounds.round === 1) this.$store.dispatch("shuffleDeck")
-      this.$store.dispatch("nextRound")
+      this.$emit("getHand", "fold");
+      this.$store.dispatch("nextRound");
+      this.$store.dispatch("fold");
+      if (this.$store.state.rounds.round === 1) {
+        this.$store.dispatch("shuffleDeck");
+        this.$store.dispatch("dealCards");
+      }
     },
     check() {
-      this.$store.dispatch("nextRound")
-    }
-  }
+      this.$store.dispatch("nextRound");
+
+      if (this.$store.state.rounds.round === 1) {
+        this.$store.dispatch("shuffleDeck");
+        this.$store.dispatch("dealCards");
+        this.c = [];
+        this.$store.state.players.player.cards.forEach((card) => {
+          this.c.push(card.value);
+        });
+      }
+
+      if (!this.$store.state.players.player.fold) {
+        if (this.$store.state.rounds.round === 2) {
+          this.c = [];
+          this.$store.state.players.player.cards.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.flopp.forEach((card) => {
+            this.c.push(card.value);
+          });
+        }
+
+        if (this.$store.state.rounds.round === 3) {
+          this.c = [];
+          this.$store.state.players.player.cards.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.flopp.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.fourthCard.forEach((card) => {
+            this.c.push(card.value);
+          });
+        }
+
+        if (this.$store.state.rounds.round === 4) {
+          this.c = [];
+          this.$store.state.players.player.cards.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.flopp.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.fourthCard.forEach((card) => {
+            this.c.push(card.value);
+          });
+          this.$store.state.cardDeck.fifthCard.forEach((card) => {
+            this.c.push(card.value);
+          });
+        }
+
+        this.$emit("getHand", solveHand(this.c));
+      } else this.$emit("getHand", "fold");
+    },
+  },
+  created() {
+    this.c = [];
+    this.$store.state.players.player.cards.forEach((card) => {
+      this.c.push(card.value);
+    });
+
+    this.$emit("getHand", solveHand(this.c));
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .action-container {
   width: 100%;
   margin-right: 100px;
@@ -86,6 +154,6 @@ button {
   cursor: pointer;
 }
 .raise {
-    width: 150px;
+  width: 150px;
 }
 </style>
