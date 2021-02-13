@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     fold() {
+      if(this.$store.state.rounds.round === 1) this.$store.dispatch("shuffleDeck")
       this.$store.dispatch("nextRound")
     },
     check() {

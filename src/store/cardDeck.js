@@ -1,10 +1,6 @@
 export default {
     getters: {
-        shuffledDeck: state => {
-            return state.deck.sort(() => Math.random() - 0.5)
-
-        },
-        getFiveCards: (state, getters) => getters.shuffledDeck.splice(0, 5),
+        getFiveCards: state => state.deck.splice(0, 5),
 
         getFlopp: (state, getters) => getters.getFiveCards.splice(0, 3),
 
@@ -12,8 +8,16 @@ export default {
 
         getFifthCard: (state, getters) => getters.getFiveCards.splice(0, 1)
     },
-    mutations: {},
-    actions: {},
+    mutations: {
+        shuffleDeck(state) {
+            state.deck.sort(() => Math.random() - 0.5)
+        }
+    },
+    actions: {
+        shuffleDeck(context) {
+            context.commit("shuffleDeck")
+        }
+    },
     state: () => ({
         deck: [
             {

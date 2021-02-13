@@ -30,6 +30,9 @@ export default {
       return this.$store.state.rounds.round
     }
   },
+  created() {
+    this.$store.dispatch("shuffleDeck")
+  }
 };
 </script>
 
